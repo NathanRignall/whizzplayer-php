@@ -1,19 +1,21 @@
 <?php 
     /*!
-    * Whizz Player v0.1.0
+    * Whizz Player 0.1.0-alpha.1
     * Nathan Rignall
     * 18/09/2020
     */
     
-    //Include Header
+    //Include Important
     require_once 'lib/vars.php';
     require_once 'lib/sql_connect.php';
 
     ob_start();
     session_start();
 
-    //global vars
+    //vars
     $INFOURL = $BASEURL . "index.php/info";
+
+    //Load correct page
     $pageuri = basename(($_SERVER['REQUEST_URI']));
     $pageuri = strtok($pageuri, '?');
 
@@ -23,26 +25,29 @@
                    "track-edit"=>"lib/track_edit.php",
                    "upload"=>"lib/tracks_upload.php",
                    "info"=>"lib/info_page.php",
-                   "halt-track"=>"lib/halt_track_now.php",
+                   "halt-track"=>"lib/halt_track.php",
+                   "halt-track-now"=>"lib/halt_track_now.php",
                    "settings"=>"lib/system_settings.php",
                    "home"=>"lib/home_page.php");
 
+    //If no site is found in index user is sent to home page
     if (empty($sites[$pageuri])) {
         $page = "lib/home_page.php";
     } else {
         $page = $sites[$pageuri];
     }
     
-    require_once 'lib/main_header.php';
-
-    // Initialize the session
+    //Initialize the session
     session_start();
     
-    // Check if the user is logged in, if not then redirect him to login page
+    //Check if user is  logged in, if not send to login page
     if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         header("location: " . $BASEURL . "login.php");
         exit;
     }
+
+    //Inculde the header
+    require_once 'lib/main_header.php';
 ?>
 
 <body>

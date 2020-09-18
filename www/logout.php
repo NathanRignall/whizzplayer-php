@@ -1,20 +1,23 @@
 <?php
     /*!
-    * Whizz Player v0.1.0
+    * Whizz Player 0.1.0-alpha.1
     * Nathan Rignall
     * 18/09/2020
     */
 
-    // Initialize the session
+    //Include Important
+    require_once 'lib/vars.php';
+
+    //Initialize the session
     session_start();
     
-    // Unset all of the session variables
+    //Unset all of the session variables
     $_SESSION = array();
     
-    // Destroy the session.
+    //Destroy the session.
     session_destroy();
     
-    // Redirect to login page
+    //Redirect to login page
     header("location: " . $BASEURL . "login.php");
     exit;
 ?>

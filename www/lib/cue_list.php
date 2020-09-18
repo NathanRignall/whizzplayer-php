@@ -1,6 +1,6 @@
 <?php
     /*!
-    * Whizz Player v0.1.0
+    * Whizz Player 0.1.0-alpha.1
     * Nathan Rignall
     * 18/09/2020
     */
@@ -10,6 +10,118 @@
     Cues.RepeatTue, Cues.RepeatWed, Cues.RepeatThu, Cues.RepeatFri, Cues.RepeatSat, Cues.RepeatSun, Cues.Enabled, 
     Tracks.TrackID, Tracks.TrackDisplayName, Tracks.SongFile FROM Cues, Tracks WHERE Cues.TrackID = Tracks.TrackID";
     $resultClueList = $conn->query($sqlClueList);
+?>
+
+<?php
+    // Simple functions for page load
+    function isenableddayscol($data) {
+        if ($data == 1) {
+            return "list-group-item-primary";
+        } else {
+            return "list-group-item-secondary";
+        }
+    }
+    // Checks input for sql injection attacks
+    function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        $data = str_replace( "'","",$data );
+        return $data;
+    }
+
+    //Server side for deleteing cues
+    //If the delete cue button is pressed
+    if(isset($_POST['deletecue'])){
+        if(!empty($_POST['deletecuearry'])) {
+            foreach($_POST['deletecuearry'] as $value){
+                $sqlDeleteCue = "DELETE FROM Cues WHERE CueID=$value";
+                if ($conn->query($sqlDeleteCue) === TRUE) {
+                    $_SESSION["info-headertitle"] = "Success!";
+                    $_SESSION["info-bodyinfo"] = "Cue deleted successfully";
+                    $_SESSION["info-targeturl"] = "cues";
+                    $_SESSION["info-iserror"] = "n";
+                } else {
+                    $_SESSION["info-headertitle"] = "Error!";
+                    $_SESSION["info-bodyinfo"] = "Error... Could not delete cue. Internal Error. : " . $conn->error;
+                    $_SESSION["info-targeturl"] = "cues";
+                    $_SESSION["info-iserror"] = "y";
+                }
+            }
+            header("Location: " . $INFOURL);
+            ob_end_flush();
+        }
+    }
+
+    //Server side for creating a new cue
+    // IF the create cue button is pressed
+    if(isset($_POST['createcue'])){
+        // Set vars equal to post data from form with injection checking
+        $CueDisplayNameSet = test_input($_POST['cuedisplayname']);
+        $PlayTimeSet = test_input($_POST['playtime']);
+        $PlayDateSet = test_input($_POST["playdate"]);
+        // Set boolean vars to 0 to remove errors
+        $RepeatsSet = 0;
+        $RepeatMonSet = 0;
+        $RepeatTueSet = 0;
+        $RepeatWedSet = 0;
+        $RepeatThuSet = 0;
+        $RepeatFriSet = 0;
+        $RepeatSatSet = 0;
+        $RepeatSunSet = 0;
+        $EnabledSet = 0;
+
+        // Set selected track var
+        foreach ($_POST['trackselect'] as $selectedTrack) {
+            $TrackIDSet = $selectedTrack;
+        }
+
+        // Set vars to 1 if checkboxes are checked and more if repeats is enabled
+        if (isset($_POST['enabled'])) { $EnabledSet = 1; }
+        if (isset($_POST['repeats'])) { $RepeatsSet = 1; }
+        // Set vars to 1 for repeat days, uses array to store form data
+        foreach ($_POST['repeatdays'] as $selectedRepeatDays) {
+            if ($selectedRepeatDays == 1) {
+                $RepeatMonSet = 1;
+            } elseif ($selectedRepeatDays == 2) {
+                $RepeatTueSet = 1;
+            } elseif ($selectedRepeatDays == 3) {
+                $RepeatWedSet = 1;
+            } elseif ($selectedRepeatDays == 4) {
+                $RepeatThuSet = 1;
+            } elseif ($selectedRepeatDays == 5) {
+                $RepeatFriSet = 1;
+            } elseif ($selectedRepeatDays == 6) {
+                $RepeatSatSet = 1;
+            } elseif ($selectedRepeatDays == 7) {
+                $RepeatSunSet = 1;
+            }
+        }
+
+        // SQL Create Cue Command - Used create new cue
+        $sqlCreateCue = "INSERT INTO Cues (CueDisplayName,TrackID,PlayTime,PlayDate,Repeats,RepeatMon,RepeatTue,RepeatWed,RepeatThu,RepeatFri,RepeatSat,RepeatSun,Enabled)
+                        VALUES ('" . $CueDisplayNameSet . "', " . $TrackIDSet  . ", '" . $PlayTimeSet  . "', '" . $PlayDateSet  . "', " . $RepeatsSet  . ", 
+                        " . $RepeatMonSet  . ", " . $RepeatTueSet  . ", " . $RepeatWedSet  . ", " . $RepeatThuSet  . ", " . $RepeatFriSet  . ", " . $RepeatSatSet  . ", " . $RepeatSunSet . ", " . $EnabledSet . ")";
+        if ($conn->query($sqlCreateCue) === TRUE) {
+            $_SESSION["info-headertitle"] = "Success!";
+            $_SESSION["info-bodyinfo"] = "Created cue successfully";
+            $_SESSION["info-targeturl"] = "cues";
+            $_SESSION["info-iserror"] = "n";
+        } else {
+            $_SESSION["info-headertitle"] = "Error!";
+            $_SESSION["info-bodyinfo"] = "Error... Couldn't create cue. " . $sqlCreateCue . "<br>" . $conn->error;
+            $_SESSION["info-targeturl"] = "cues";
+            $_SESSION["info-iserror"] = "y";
+        }
+        header("Location: " . $INFOURL);
+        ob_end_flush();
+    }
+
+    //Upload modal pre expand if get url is correct
+    $uploadinstant = $_GET["createinstant"];
+    if ($uploadinstant == "Y") {
+        echo "<script type='text/javascript'>$(document).ready(function(){ $('#cueCreate').modal('show'); });</script>"; 
+    }
 ?>
 
 <h1>Cue List</h1>
@@ -256,122 +368,3 @@
     }, false);
     })();
 </script>
-
-<?php
-    // Simple functions for page load
-    function isenableddayscol($data) {
-        if ($data == 1) {
-            return "list-group-item-primary";
-        } else {
-            return "list-group-item-secondary";
-        }
-    }
-    // Checks input for sql injection attacks
-    function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        $data = str_replace( "'","",$data );
-        return $data;
-    }
-
-?>
-
-<?php
-    //Server side for deleteing cues
-    //If the delete cue button is pressed
-    if(isset($_POST['deletecue'])){
-        if(!empty($_POST['deletecuearry'])) {
-            foreach($_POST['deletecuearry'] as $value){
-                $sqlDeleteCue = "DELETE FROM Cues WHERE CueID=$value";
-                if ($conn->query($sqlDeleteCue) === TRUE) {
-                    $_SESSION["info-headertitle"] = "Success!";
-                    $_SESSION["info-bodyinfo"] = "Cue deleted successfully";
-                    $_SESSION["info-targeturl"] = "cues";
-                    $_SESSION["info-iserror"] = "n";
-                } else {
-                    $_SESSION["info-headertitle"] = "Error!";
-                    $_SESSION["info-bodyinfo"] = "Error... Could not delete cue. Internal Error. : " . $conn->error;
-                    $_SESSION["info-targeturl"] = "cues";
-                    $_SESSION["info-iserror"] = "y";
-                }
-            }
-            header("Location: " . $INFOURL);
-            ob_end_flush();
-        }
-    }
-?>
-
-<?php
-    //Server side for creating a new cue
-    // IF the create cue button is pressed
-    if(isset($_POST['createcue'])){
-        // Set vars equal to post data from form with injection checking
-        $CueDisplayNameSet = test_input($_POST['cuedisplayname']);
-        $PlayTimeSet = test_input($_POST['playtime']);
-        $PlayDateSet = test_input($_POST["playdate"]);
-        // Set boolean vars to 0 to remove errors
-        $RepeatsSet = 0;
-        $RepeatMonSet = 0;
-        $RepeatTueSet = 0;
-        $RepeatWedSet = 0;
-        $RepeatThuSet = 0;
-        $RepeatFriSet = 0;
-        $RepeatSatSet = 0;
-        $RepeatSunSet = 0;
-        $EnabledSet = 0;
-
-        // Set selected track var
-        foreach ($_POST['trackselect'] as $selectedTrack) {
-            $TrackIDSet = $selectedTrack;
-        }
-
-        // Set vars to 1 if checkboxes are checked and more if repeats is enabled
-        if (isset($_POST['enabled'])) { $EnabledSet = 1; }
-        if (isset($_POST['repeats'])) { $RepeatsSet = 1; }
-        // Set vars to 1 for repeat days, uses array to store form data
-        foreach ($_POST['repeatdays'] as $selectedRepeatDays) {
-            if ($selectedRepeatDays == 1) {
-                $RepeatMonSet = 1;
-            } elseif ($selectedRepeatDays == 2) {
-                $RepeatTueSet = 1;
-            } elseif ($selectedRepeatDays == 3) {
-                $RepeatWedSet = 1;
-            } elseif ($selectedRepeatDays == 4) {
-                $RepeatThuSet = 1;
-            } elseif ($selectedRepeatDays == 5) {
-                $RepeatFriSet = 1;
-            } elseif ($selectedRepeatDays == 6) {
-                $RepeatSatSet = 1;
-            } elseif ($selectedRepeatDays == 7) {
-                $RepeatSunSet = 1;
-            }
-        }
-
-        // SQL Create Cue Command - Used create new cue
-        $sqlCreateCue = "INSERT INTO Cues (CueDisplayName,TrackID,PlayTime,PlayDate,Repeats,RepeatMon,RepeatTue,RepeatWed,RepeatThu,RepeatFri,RepeatSat,RepeatSun,Enabled)
-                        VALUES ('" . $CueDisplayNameSet . "', " . $TrackIDSet  . ", '" . $PlayTimeSet  . "', '" . $PlayDateSet  . "', " . $RepeatsSet  . ", 
-                        " . $RepeatMonSet  . ", " . $RepeatTueSet  . ", " . $RepeatWedSet  . ", " . $RepeatThuSet  . ", " . $RepeatFriSet  . ", " . $RepeatSatSet  . ", " . $RepeatSunSet . ", " . $EnabledSet . ")";
-        if ($conn->query($sqlCreateCue) === TRUE) {
-            $_SESSION["info-headertitle"] = "Success!";
-            $_SESSION["info-bodyinfo"] = "Created cue successfully";
-            $_SESSION["info-targeturl"] = "cues";
-            $_SESSION["info-iserror"] = "n";
-        } else {
-            $_SESSION["info-headertitle"] = "Error!";
-            $_SESSION["info-bodyinfo"] = "Error... Couldn't create cue. " . $sqlCreateCue . "<br>" . $conn->error;
-            $_SESSION["info-targeturl"] = "cues";
-            $_SESSION["info-iserror"] = "y";
-        }
-        header("Location: " . $INFOURL);
-        ob_end_flush();
-    }
-?>
-
-<?php 
-    //Upload modal pre expand if get url is correct
-    $uploadinstant = $_GET["createinstant"];
-    if ($uploadinstant == "Y") {
-        echo "<script type='text/javascript'>$(document).ready(function(){ $('#cueCreate').modal('show'); });</script>"; 
-    }
-?>

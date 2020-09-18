@@ -1,9 +1,32 @@
 <?php 
     /*!
-    * Whizz Player v0.1.0
+    * Whizz Player 0.1.0-alpha.1
     * Nathan Rignall
     * 18/09/2020
     */
+
+    //Server side for instant playback
+    //If the play button is pressed
+    if(isset($_POST['play'])){
+        // Set selected track var
+        foreach ($_POST['trackselect'] as $selectedTrack) {
+            $TrackIDInstant = $selectedTrack;
+        }
+        $sqlInstantPlay = "UPDATE InstantPlay SET TrackID = " . $TrackIDInstant . ", Played = 0";
+        if ($conn->query($sqlInstantPlay) === TRUE) {
+            $_SESSION["info-headertitle"] = "Success!";
+            $_SESSION["info-bodyinfo"] = "Track activated successfully";
+            $_SESSION["info-targeturl"] = "home";
+            $_SESSION["info-iserror"] = "n";
+        } else {
+            $_SESSION["info-headertitle"] = "Error!";
+            $_SESSION["info-bodyinfo"] = "Error... Could not activate track. Internal SQL Error. : " . $conn->error;
+            $_SESSION["info-targeturl"] = "home";
+            $_SESSION["info-iserror"] = "y";
+        }
+        header("Location: " . $INFOURL);
+        ob_end_flush();
+    }
 ?>
 
 <!-- Homepage Top Header -->
@@ -95,28 +118,3 @@
     document.getElementById("systemtime").innerHTML = "Sorry, your browser does not support server-sent events...";
     }
 </script>
-
-<?php
-    //Server side for instant playback
-    //If the play button is pressed
-    if(isset($_POST['play'])){
-        // Set selected track var
-        foreach ($_POST['trackselect'] as $selectedTrack) {
-            $TrackIDInstant = $selectedTrack;
-        }
-        $sqlInstantPlay = "UPDATE InstantPlay SET TrackID = " . $TrackIDInstant . ", Played = 0";
-        if ($conn->query($sqlInstantPlay) === TRUE) {
-            $_SESSION["info-headertitle"] = "Success!";
-            $_SESSION["info-bodyinfo"] = "Track activated successfully";
-            $_SESSION["info-targeturl"] = "home";
-            $_SESSION["info-iserror"] = "n";
-        } else {
-            $_SESSION["info-headertitle"] = "Error!";
-            $_SESSION["info-bodyinfo"] = "Error... Could not activate track. Internal SQL Error. : " . $conn->error;
-            $_SESSION["info-targeturl"] = "home";
-            $_SESSION["info-iserror"] = "y";
-        }
-        header("Location: " . $INFOURL);
-        ob_end_flush();
-    }
-?>

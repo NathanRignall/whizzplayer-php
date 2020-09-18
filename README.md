@@ -1,1 +1,1 @@
-# whizzplayer
+# Whizz Player 0.1.0-alpha.1
