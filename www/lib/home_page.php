@@ -94,27 +94,28 @@
 <script>
     //SSE Event for Now playing feild
     if(typeof(EventSource) !== "undefined") {
-    var source = new EventSource("stats.php/playing");
-    source.onmessage = function(event) {
-        document.getElementById("nowplaying").innerHTML = event.data;
-        if (event.data == "No Track Playing") {
-            document.getElementById("nowplayingdiv").classList.remove("bg-warning");
-            document.getElementById("nowplayingdiv").classList.add("bg-secondary");
-        } else {
-            document.getElementById("nowplayingdiv").classList.remove("bg-secondary");
-            document.getElementById("nowplayingdiv").classList.add("bg-warning");
-        }
-    };
+        var source1 = new EventSource("<?php echo$BASEURL;?>stats.php/playing");
+        source1.onmessage = function(event) {
+            document.getElementById("nowplaying").innerHTML = event.data;
+            if (event.data == "No Track Playing") {
+                document.getElementById("nowplayingdiv").classList.remove("bg-warning");
+                document.getElementById("nowplayingdiv").classList.add("bg-secondary");
+            } else {
+                document.getElementById("nowplayingdiv").classList.remove("bg-secondary");
+                document.getElementById("nowplayingdiv").classList.add("bg-warning");
+            }
+        };
     } else {
-    document.getElementById("nowplaying").innerHTML = "Sorry, your browser does not support server-sent events...";
-    }
+        document.getElementById("nowplaying").innerHTML = "Sorry, your browser does not support server-sent events...";
+    };
+
     //SSE Event for system time feild
     if(typeof(EventSource) !== "undefined") {
-    var source = new EventSource("stats.php/time");
-    source.onmessage = function(event) {
-        document.getElementById("systemtime").innerHTML = event.data;
-    };
+        var source2 = new EventSource("<?php echo$BASEURL;?>stats.php/time");
+        source2.onmessage = function(event) {
+            document.getElementById("systemtime").innerHTML = event.data;
+        };
     } else {
-    document.getElementById("systemtime").innerHTML = "Sorry, your browser does not support server-sent events...";
-    }
+        document.getElementById("systemtime").innerHTML = "Sorry, your browser does not support server-sent events...";
+    };
 </script>

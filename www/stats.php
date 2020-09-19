@@ -16,12 +16,22 @@
 
     //page vars for include
     if ($pageuri == "playing") {
-        $page = 'lib/stats/playing.php';
-    } elseif ($pageuri == "time") {
-        $page = 'lib/stats/time.php';
-    }
+        //Get SQL data for playing track
+        $sqlNowPlaying = "SELECT Playing.TrackID, Playing.HaltTrack, Tracks.TrackDisplayName, Tracks.SongFile FROM Playing,Tracks WHERE Playing.TrackID = Tracks.TrackID";
+        $resultNowPlaying = $conn->query($sqlNowPlaying);
 
-    include_once $page;
+        if ($resultNowPlaying->num_rows == 1) {
+            while($rowNowPlaying = $resultNowPlaying->fetch_assoc()) {
+                echo "data: " . $rowNowPlaying["TrackDisplayName"] . "\n\n";
+            }
+        } else {
+            echo "data: No Track Playing\n\n";
+        }
+    } elseif ($pageuri == "time") {
+        //Get time data
+        $time = date('Y/m/d H:i:s');
+        echo "data: {$time}\n\n";
+    }
 
     flush();
 ?>
