@@ -6,7 +6,9 @@
     */
     
     //Get TrackID to edit
-    $TrackID = $_GET["track"];
+    $TrackID = $urlparts[4];
+
+    //$TrackID = $_GET["track"];
 
     //Get current SQL data for correct TrackID
     $sqlTrackEdit = "SELECT * FROM Tracks WHERE TrackID = $TrackID";

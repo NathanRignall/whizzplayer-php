@@ -220,7 +220,7 @@
                         </div>
                         <!-- Cue Item Edit Button -->
                         <div class="p-2">
-                            <a href="cue-edit?cue=<?php echo $rowClueList["CueID"]; ?>" class="btn btn-primary">Edit</a>
+                            <a href="cue-edit/<?php echo $rowClueList["CueID"]; ?>" class="btn btn-primary">Edit</a>
                         </div>
                     </div>
                 </div>

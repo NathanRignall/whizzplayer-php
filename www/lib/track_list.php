@@ -94,7 +94,7 @@
                             </div>
                             <!-- Track Item Edit Button -->
                             <div class="p-2">
-                                <a class="btn btn-primary" href="track-edit?track=<?php echo $rowTrackList["TrackID"]; ?>">Edit</a>
+                                <a class="btn btn-primary" href="track-edit/<?php echo $rowTrackList["TrackID"]; ?>">Edit</a>
                             </div>
                         </div> 
                     </div>

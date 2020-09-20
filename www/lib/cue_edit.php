@@ -6,7 +6,7 @@
     */
 
     //Get CueID to edit
-    $CueID = $_GET["cue"];
+    $CueID = $urlparts[4];
 
     //Get current SQL data for correct CueID
     $sqlCueEdit = "SELECT * FROM Cues WHERE CueID = $CueID";

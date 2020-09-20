@@ -15,9 +15,9 @@
     //vars
     $INFOURL = $BASEURL . "index.php/info";
 
-    //Load correct page
-    $pageuri = basename(($_SERVER['REQUEST_URI']));
-    $pageuri = strtok($pageuri, '?');
+    $pageurl = htmlspecialchars($_SERVER['PHP_SELF']);
+    $urlparts = Explode('/', $pageurl);
+    $pageuri = $urlparts[3];
 
     $sites = array("cues"=>"lib/cue_list.php", 
                    "cue-edit"=>"lib/cue_edit.php",
