@@ -23,6 +23,6 @@
 <br>
 
 <div class="text-center">
-<a href="<?php echo $BASEURL; ?>index.php/halt-track-now" class="btn btn-danger p-4" role="button"><h1>Okay</h1></a>
-<a href="<?php echo $BASEURL; ?>" class="btn btn-success p-4" role="button"><h1>Return</h1></a>
+<a href="<?php echo $siteconfig['baseurl']; ?>index.php/halt-track-now" class="btn btn-danger p-4" role="button"><h1>Okay</h1></a>
+<a href="<?php echo $siteconfig['baseurl']; ?>" class="btn btn-success p-4" role="button"><h1>Return</h1></a>
 </div>

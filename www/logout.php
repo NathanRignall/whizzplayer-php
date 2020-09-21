@@ -6,7 +6,7 @@
     */
 
     //Include Important
-    require_once 'lib/vars.php';
+    require_once 'config/config.php';
 
     //Initialize the session
     session_start();
@@ -18,6 +18,6 @@
     session_destroy();
     
     //Redirect to login page
-    header("location: " . $BASEURL . "login.php");
+    header("location: " . $siteconfig['baseurl'] . "login.php");
     exit;
 ?>

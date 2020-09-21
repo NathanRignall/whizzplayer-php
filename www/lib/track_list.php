@@ -25,7 +25,7 @@
                     $sqlDelFile = "SELECT Tracks.SongFile FROM Tracks WHERE TrackID=$value";
                     $resultDelFile = $conn->query($sqlDelFile);
                     while($rowDelFile = $resultDelFile->fetch_assoc()) {
-                        $delfile =  "songs/" . $rowDelFile["SongFile"];
+                        $delfile =  $siteconfig['uploadtrack'] . $rowDelFile["SongFile"];
                     }
                     unlink($delfile);
                     $sql = "DELETE FROM Tracks WHERE TrackID=$value";
@@ -78,7 +78,7 @@
                         <!-- Track Item Audio Playback -->
                         <div class="text-center">
                             <audio controls>
-                                <source src="<?php echo $TRACKURL . $rowTrackList["SongFile"]; ?>" type="audio/mpeg">
+                                <source src="<?php echo $siteconfig['trackurl'] . $rowTrackList["SongFile"]; ?>" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
@@ -122,7 +122,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <!-- Upload Track Modal Form -->
-        <form action="<?php echo $BASEURL;?>index.php/upload" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <form action="<?php echo $siteconfig['baseurl'];?>index.php/upload" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             <!-- Upload Track Modal Body -->
             <div class="modal-body">
                 <!-- Upload Track Modal Display Name -->

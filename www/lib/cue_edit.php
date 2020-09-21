@@ -243,7 +243,7 @@
             <form method="post">
                 <input type="submit" class="btn btn-danger" value="Delete Cue" name="delete">
             </form>
-            <a href="<?php echo$BASEURL;?>index.php/cues" class="btn btn-secondary">Return</a>
+            <a href="<?php echo $siteconfig['baseurl'];?>index.php/cues" class="btn btn-secondary">Return</a>
         </div>
     </form>
 </div>

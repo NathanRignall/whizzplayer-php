@@ -6,14 +6,14 @@
     */
     
     //Include Important
-    require_once 'lib/vars.php';
+    require_once 'config/config.php';
     require_once 'lib/sql_connect.php';
 
-    ob_start();
+    //Initialize the session
     session_start();
-
+    
     //vars
-    $INFOURL = $BASEURL . "index.php/info";
+    $INFOURL = $siteconfig['baseurl'] . "index.php/info";
 
     $pageurl = htmlspecialchars($_SERVER['PHP_SELF']);
     $urlparts = Explode('/', $pageurl);
@@ -28,6 +28,7 @@
                    "halt-track"=>"lib/halt_track.php",
                    "halt-track-now"=>"lib/halt_track_now.php",
                    "settings"=>"lib/system_settings.php",
+                   "instant-play"=>"lib/instant_play.php",
                    "home"=>"lib/home_page.php");
 
     //If no site is found in index user is sent to home page
@@ -42,7 +43,7 @@
     
     //Check if user is  logged in, if not send to login page
     if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-        header("location: " . $BASEURL . "login.php");
+        header("location: " . $siteconfig['baseurl'] . "login.php");
         exit;
     }
 
@@ -54,22 +55,22 @@
 
 <!-- Main navbar-->
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-<a class="navbar-brand" href="<?php echo$BASEURL;?>index.php">Music Player</a>
+<a class="navbar-brand" href="<?php echo $siteconfig['baseurl'];?>index.php">Music Player</a>
 <ul class="navbar-nav">
     <li class="nav-item">
-    <a class="nav-link" href="<?php echo$BASEURL;?>index.php/cues">Cues</a>
+        <a class="nav-link" href="<?php echo $siteconfig['baseurl'];?>index.php/cues">Cues</a>
     </li>
     <li class="nav-item">
-    <a class="nav-link" href="<?php echo$BASEURL;?>index.php/tracks">Tracks</a>
+        <a class="nav-link" href="<?php echo $siteconfig['baseurl'];?>index.php/tracks">Tracks</a>
     </li>
     <?php
         //Check if user is admin
         if($_SESSION["UserType"] == 1){
-            echo' <li class="nav-item"><a class="nav-link" href="' .$BASEURL . 'index.php/settings">Settings</a></li> ';
+            echo' <li class="nav-item"><a class="nav-link" href="' . $siteconfig['baseurl'] . 'index.php/settings">Settings</a></li> ';
         }
     ?>
     <li class="nav-item">
-    <a class="nav-link" href="<?php echo$BASEURL;?>logout.php">Logout</a>
+        <a class="nav-link" href="<?php echo $siteconfig['baseurl'];?>logout.php">Logout</a>
     </li>
 </ul>
 </nav>

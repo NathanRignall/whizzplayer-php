@@ -6,7 +6,7 @@
   */
 
   $TrackDisplayNameAdd = $UploadFileName = "";
-  $target_dir = $UPLOADURL;
+  $target_dir = $siteconfig['uploadtrack'];
   $uploadOk = 1;
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {

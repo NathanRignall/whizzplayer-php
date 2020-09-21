@@ -10,7 +10,7 @@
   $targeturl = $_SESSION["info-targeturl"];
   $iserror = $_SESSION["info-iserror"];
 
-  $refreshurl = $BASEURL . "index.php/" . $targeturl;
+  $refreshurl = $siteconfig['baseurl'] . "index.php/" . $targeturl;
 
   //Put session info into vars to display
   if ($iserror == "y") {

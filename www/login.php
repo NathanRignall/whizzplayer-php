@@ -6,7 +6,7 @@
     */
 
     //Include Important
-    require_once 'lib/vars.php';
+    require_once 'config/config.php';
     require_once 'lib/sql_connect.php';
 
     //Initialize the session
@@ -14,7 +14,7 @@
     
     //Check if user is already logged in. If so send to index.php  
     if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-        header("location:" . $BASEURL . "index.php");
+        header("location:" . $siteconfig['baseurl'] . "index.php");
         exit;
     }
     
@@ -51,13 +51,12 @@
                             if(password_verify($password, $hashed_password)){
                                 //Password is correct and start a new session
                                 session_start();
-                                //Store data in session variables
                                 $_SESSION["loggedin"] = true;
                                 $_SESSION["id"] = $id;
                                 $_SESSION["username"] = $username;       
                                 $_SESSION["UserType"] = $UserType;                      
                                 // Redirect user to welcome page
-                                header("location:" . $BASEURL . "index.php");
+                                header("location:" . $siteconfig['baseurl'] . "index.php");
                             } else{
                                 //Error message if password is not valid
                                 $password_err = "The password you entered was incorrect.";
@@ -86,9 +85,9 @@
 <body>
     <!-- Login Top Header -->
     <div class="jumbotron">
-        <h1><?php echo $systemname;?></h1>
-        <span class="badge badge-primary mb-1"><?php echo $version; ?></span>   
-        <p><?php echo $systeminfo;?></p>  
+        <h1><?php echo $siteconfig['systemname'];?></h1>
+        <span class="badge badge-primary mb-1"><?php echo $siteconfig['version']; ?></span>   
+        <p><?php echo $siteconfig['systeminfo'];?></p>  
     </div>
 
     <div class="container" style="margin-top:80px">

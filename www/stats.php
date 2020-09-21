@@ -8,7 +8,8 @@
     header('Content-Type: text/event-stream');
     header('Cache-Control: no-cache');
 
-    require_once 'lib/vars.php';
+    //Include Important
+    require_once 'config/config.php';
     require_once 'lib/sql_connect.php';
 
     $pageuri = basename(($_SERVER['REQUEST_URI']));

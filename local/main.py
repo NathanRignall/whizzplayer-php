@@ -4,9 +4,9 @@ from pygame import mixer
 #Int sql connection
 mydb = mysql.connector.connect(
   host="localhost",
-  user="musicplayer",
-  password="Music1234",
-  database="MusicPlayerCore"
+  user="whizzplayeruser",
+  password="Music2109!",
+  database="whizzplayer"
 )
 
 mydb.autocommit = True

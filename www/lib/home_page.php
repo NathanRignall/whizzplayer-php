@@ -31,12 +31,12 @@
 
 <!-- Homepage Top Header -->
 <div class="jumbotron">
-    <h1><?php echo $systemname;?></h1>
-    <span class="badge badge-primary mb-1"><?php echo $version; ?></span>
-    <p><?php echo $systeminfo;?></p>
-    <a href="index.php/cues?createinstant=Y" class="btn btn-dark btn-lg mt-1" role="button">Create Cue</a>
-    <a href="index.php/tracks?uploadinstant=Y" class="btn btn-secondary btn-lg mt-1" role="button">Upload Track</a>
-    <a href="index.php/halt-track" class="btn btn-danger btn-lg mt-1" role="button">HALT TRACK</a>
+    <h1><?php echo $siteconfig['systemname'];?></h1>
+    <span class="badge badge-primary mb-1"><?php echo $siteconfig['version']; ?></span>
+    <p><?php echo $siteconfig['systeminfo'];?></p>
+    <a href="<?php echo $siteconfig['baseurl'];?>index.php/cues?createinstant=Y" class="btn btn-dark btn-lg mt-1" role="button">Create Cue</a>
+    <a href="<?php echo $siteconfig['baseurl'];?>index.php/tracks?uploadinstant=Y" class="btn btn-secondary btn-lg mt-1" role="button">Upload Track</a>
+    <a href="<?php echo $siteconfig['baseurl'];?>index.php/halt-track" class="btn btn-danger btn-lg mt-1" role="button">HALT TRACK</a>
 </div>
 
 <!-- Main card grid system -->
@@ -95,7 +95,7 @@
 <script>
     //SSE Event for Now playing feild
     if(typeof(EventSource) !== "undefined") {
-        var source1 = new EventSource("<?php echo$BASEURL;?>stats.php/playing");
+        var source1 = new EventSource("<?php echo $siteconfig['baseurl'];?>stats.php/playing");
         source1.onmessage = function(event) {
             document.getElementById("nowplaying").innerHTML = event.data;
             if (event.data == "No Track Playing") {
@@ -112,7 +112,7 @@
 
     //SSE Event for system time feild
     if(typeof(EventSource) !== "undefined") {
-        var source2 = new EventSource("<?php echo$BASEURL;?>stats.php/time");
+        var source2 = new EventSource("<?php echo $siteconfig['baseurl'];?>stats.php/time");
         source2.onmessage = function(event) {
             document.getElementById("systemtime").innerHTML = event.data;
         };

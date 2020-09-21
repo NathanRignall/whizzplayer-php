@@ -5,6 +5,11 @@
   * 18/09/2020
   */
 
+  $servername = $siteconfig['server'];
+  $dbname = $siteconfig['dbname'];
+  $username = $siteconfig['dbuser'];
+  $password = $siteconfig['dbpass'];
+
   // Create connection
   $conn = new mysqli($servername, $username, $password, $dbname);
 

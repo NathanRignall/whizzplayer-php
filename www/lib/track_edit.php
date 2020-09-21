@@ -8,8 +8,6 @@
     //Get TrackID to edit
     $TrackID = $urlparts[4];
 
-    //$TrackID = $_GET["track"];
-
     //Get current SQL data for correct TrackID
     $sqlTrackEdit = "SELECT * FROM Tracks WHERE TrackID = $TrackID";
     $resultTrackEdit = $conn->query($sqlTrackEdit);
@@ -72,7 +70,7 @@
             $sqlDelFile = "SELECT Tracks.SongFile FROM Tracks WHERE TrackID=$TrackID";
             $resultDelFile = $conn->query($sqlDelFile);
             while($rowDelFile = $resultDelFile->fetch_assoc()) {
-                $delfile =  "songs/" . $rowDelFile["SongFile"];
+                $delfile =  $siteconfig['uploadtrack'] . $rowDelFile["SongFile"];
             }
             unlink($delfile);
             $sql = "DELETE FROM Tracks WHERE TrackID=$TrackID";
@@ -112,7 +110,7 @@
             <!-- Track Item Audio Playback -->
             <div class="text-center">
                 <audio controls>
-                    <source src="<?php echo $BASEURL . "songs/" . $SongFileName ?>" type="audio/mpeg">
+                    <source src="<?php echo $siteconfig['trackurl'] . $SongFileName ?>" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
             </div>
@@ -124,7 +122,7 @@
             <form method="post">
                 <input type="submit" class="btn btn-danger" value="Delete Cue" name="delete">
             </form>
-            <a href="<?php echo$BASEURL;?>index.php/tracks" class="btn btn-secondary">Return</a>
+            <a href="<?php echo $siteconfig['baseurl'];?>index.php/tracks" class="btn btn-secondary">Return</a>
         </div>
     </form>
 </div>

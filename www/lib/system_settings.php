@@ -34,7 +34,7 @@
 <h1>Settings 
 
 <span class="badge badge-warning">Beta</span>
-<span class="badge badge-primary mb-1"><?php echo $version; ?></span>   
+<span class="badge badge-primary mb-1"><?php echo $siteconfig['version']; ?></span>   
 
 </h1>
 
@@ -42,13 +42,13 @@
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link <?php echo ($SetPage=="main") ? "active" : ""; ?>" href="<?php echo$BASEURL;?>index.php/settings/main">Main</a>
+    <a class="nav-link <?php echo ($SetPage=="main") ? "active" : ""; ?>" href="<?php echo $siteconfig['baseurl'];?>index.php/settings/main">Main</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link <?php echo ($SetPage=="system") ? "active" : ""; ?>" href="<?php echo$BASEURL;?>index.php/settings/system">System</a>
+    <a class="nav-link <?php echo ($SetPage=="system") ? "active" : ""; ?>" href="<?php echo $siteconfig['baseurl'];?>index.php/settings/system">System</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link <?php echo ($SetPage=="users") ? "active" : ""; ?>" href="<?php echo$BASEURL;?>index.php/settings/users">Users</a>
+    <a class="nav-link <?php echo ($SetPage=="users") ? "active" : ""; ?>" href="<?php echo $siteconfig['baseurl'];?>index.php/settings/users">Users</a>
   </li>
 </ul>
 
