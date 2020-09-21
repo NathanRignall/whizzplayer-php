@@ -12,7 +12,7 @@
     $username = "musicplayer";
     $password = "Music1234";
     $dbname = "MusicPlayerCore";
-
+    $version = "0.1.0-alpha.1";
     $systemname = "Whizz Player";
     $systeminfo = "Track scheduler system, create cues and upload audio files to schedule audio playback";
 ?>

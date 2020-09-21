@@ -18,7 +18,10 @@
 <?php
     if ($resultUsers->num_rows > 0) {
         while($rowUsers = $resultUsers->fetch_assoc()) {
-            echo $rowUsers["Username"] . $rowUsers["LastLogin"] . $rowUsers["UserType"]. "<br>";
+            echo $rowUsers["Username"] . $rowUsers["LastLogin"];
+            echo ($rowUsers["UserType"]==1) ? " Admin" :" Operator";
+            echo "<br>";
+
         }
     }
 ?>

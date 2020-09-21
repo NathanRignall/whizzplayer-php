@@ -62,9 +62,12 @@
     <li class="nav-item">
     <a class="nav-link" href="<?php echo$BASEURL;?>index.php/tracks">Tracks</a>
     </li>
-    <li class="nav-item">
-    <a class="nav-link" href="<?php echo$BASEURL;?>index.php/settings">Settings</a>
-    </li>
+    <?php
+        //Check if user is admin
+        if($_SESSION["UserType"] == 1){
+            echo' <li class="nav-item"><a class="nav-link" href="' .$BASEURL . 'index.php/settings">Settings</a></li> ';
+        }
+    ?>
     <li class="nav-item">
     <a class="nav-link" href="<?php echo$BASEURL;?>logout.php">Logout</a>
     </li>

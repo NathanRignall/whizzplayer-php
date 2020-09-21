@@ -5,6 +5,16 @@
     * 18/09/2020
     */
 
+    //Check if user is  admin
+    if($_SESSION["UserType"] == 0){
+      $_SESSION["info-headertitle"] = "Error!";
+      $_SESSION["info-bodyinfo"] = "Error... Your user doens't have access to settings";
+      $_SESSION["info-targeturl"] = "";
+      $_SESSION["info-iserror"] = "y";
+      header("Location: " . $INFOURL);
+      exit;
+    }
+
     //Load correct page
     $SetPage = $urlparts[4];
 
@@ -21,7 +31,12 @@
     }
 ?>
 
-<h1>Settings</h1>
+<h1>Settings 
+
+<span class="badge badge-warning">Beta</span>
+<span class="badge badge-primary mb-1"><?php echo $version; ?></span>   
+
+</h1>
 
 <br>
 

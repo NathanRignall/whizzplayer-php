@@ -1,26 +1,21 @@
 <?php
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = "";
-$username_err = $password_err = $confirm_password_err = "";
+$username = $password = $confirm_password = $username_err = $password_err = $confirm_password_err = "";
  
-// Processing form data when form is submitted
+// Server side for when user is created
 if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    // Validate username
+     // Validate username
     if(empty(trim($_POST["username"]))){
         $username_err = "Please enter a username.";
     } else{
-        // Prepare a select statement
         $sql = "SELECT UserID FROM Users WHERE Username = ?";
         
         if($stmt = $conn->prepare($sql)){
-            // Bind variables to the prepared statement as parameters
             $stmt->bind_param("s", $param_username);
             
-            // Set parameters
             $param_username = trim($_POST["username"]);
             
-            // Attempt to execute the prepared statement
+            // Execute the prepared statement
             if($stmt->execute()){
                 // store result
                 $stmt->store_result();
@@ -60,8 +55,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Check input errors before inserting in database
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
-        
-        // Prepare an insert statement
         $sql = "INSERT INTO Users (Username, Password) VALUES (?, ?)";
          
         if($stmt = $conn->prepare($sql)){
@@ -80,14 +73,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Something went wrong. Please try again later.";
             }
-
-            // Close statement
             $stmt->close();
         }
     }
-    
-    // Close connection
-    //$conn->close();
 }
 ?>
  
@@ -110,7 +98,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <span class="help-block"><?php echo $confirm_password_err; ?></span>
     </div>
     <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Submit">
-        <input type="reset" class="btn btn-default" value="Reset">
+        <input type="submit" class="btn btn-primary" value="Create">
     </div>
 </form>

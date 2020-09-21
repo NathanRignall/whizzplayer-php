@@ -21,9 +21,8 @@
     //Define vars
     $username = $password = $username_err = $password_err = "";
     
-    //If the login form has been submitted
+    // Server side for logging into the site
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-    
         // Check if username is empty
         if(empty(trim($_POST["username"]))){
             $username_err = "Please enter username.";
@@ -38,20 +37,16 @@
         }
         //Validate credentials
         if(empty($username_err) && empty($password_err)){
-            // Prepare a select statement
-            $sql = "SELECT id, username, password FROM users WHERE username = ?";
+            $sql = "SELECT UserID, Username, Password, UserType FROM Users WHERE Username = ?";
             if($stmt = $conn->prepare($sql)){
-                //Bind variables to the prepared statement as parameters
                 $stmt->bind_param("s", $param_username);
-                //Set parameters
                 $param_username = $username;
                 //Execute the prepared statement
                 if($stmt->execute()){
                     $stmt->store_result();
                     //Check if username exists, if yes then verify password
-                    if($stmt->num_rows == 1){                    
-                        //Bind result variables
-                        $stmt->bind_result($id, $username, $hashed_password);
+                    if($stmt->num_rows == 1) {
+                        $stmt->bind_result($id, $username, $hashed_password, $UserType);
                         if($stmt->fetch()){
                             if(password_verify($password, $hashed_password)){
                                 //Password is correct and start a new session
@@ -59,7 +54,8 @@
                                 //Store data in session variables
                                 $_SESSION["loggedin"] = true;
                                 $_SESSION["id"] = $id;
-                                $_SESSION["username"] = $username;                            
+                                $_SESSION["username"] = $username;       
+                                $_SESSION["UserType"] = $UserType;                      
                                 // Redirect user to welcome page
                                 header("location:" . $BASEURL . "index.php");
                             } else{
@@ -67,7 +63,7 @@
                                 $password_err = "The password you entered was incorrect.";
                             }
                         }
-                    } else{
+                    } else {
                         //Error message if username doesn't exist
                         $username_err = "No account found with that username.";
                     }
@@ -90,7 +86,8 @@
 <body>
     <!-- Login Top Header -->
     <div class="jumbotron">
-        <h1><?php echo $systemname;?></h1>    
+        <h1><?php echo $systemname;?></h1>
+        <span class="badge badge-primary mb-1"><?php echo $version; ?></span>   
         <p><?php echo $systeminfo;?></p>  
     </div>
 

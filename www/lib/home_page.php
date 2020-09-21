@@ -31,7 +31,8 @@
 
 <!-- Homepage Top Header -->
 <div class="jumbotron">
-    <h1><?php echo $systemname;?></h1>      
+    <h1><?php echo $systemname;?></h1>
+    <span class="badge badge-primary mb-1"><?php echo $version; ?></span>
     <p><?php echo $systeminfo;?></p>
     <a href="index.php/cues?createinstant=Y" class="btn btn-dark btn-lg mt-1" role="button">Create Cue</a>
     <a href="index.php/tracks?uploadinstant=Y" class="btn btn-secondary btn-lg mt-1" role="button">Upload Track</a>
