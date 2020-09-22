@@ -9,8 +9,17 @@
     header('Cache-Control: no-cache');
 
     //Include Important
-    require_once 'config/config.php';
-    require_once 'lib/sql_connect.php';
+    $pageurl = htmlspecialchars($_SERVER['PHP_SELF']);
+    $urlparts = Explode('/', $pageurl);
+
+    //Include Important
+    if (file_exists("config/config.php")) {
+        require_once "config/config.php";
+        require_once 'lib/sql_connect.php';
+    }
+    else {
+        header("location: /" .  $urlparts[1] . "/setup.php");
+    }
 
     $pageuri = basename(($_SERVER['REQUEST_URI']));
     $pageuri = strtok($pageuri, '?');

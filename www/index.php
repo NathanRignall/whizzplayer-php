@@ -5,18 +5,23 @@
     * 18/09/2020
     */
     
+    $pageurl = htmlspecialchars($_SERVER['PHP_SELF']);
+    $urlparts = Explode('/', $pageurl);
+
     //Include Important
-    require_once 'config/config.php';
-    require_once 'lib/sql_connect.php';
+    if (file_exists("config/config.php")) {
+        require_once "config/config.php";
+        require_once 'lib/sql_connect.php';
+    }
+    else {
+        header("location: /" .  $urlparts[1] . "/setup.php");
+    }
 
     //Initialize the session
     session_start();
     
     //vars
     $INFOURL = $siteconfig['baseurl'] . "index.php/info";
-
-    $pageurl = htmlspecialchars($_SERVER['PHP_SELF']);
-    $urlparts = Explode('/', $pageurl);
     $pageuri = $urlparts[3];
 
     $sites = array("cues"=>"lib/cue_list.php", 

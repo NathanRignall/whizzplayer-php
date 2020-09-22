@@ -10,8 +10,7 @@
     $resultUsers = $conn->query($sqlUsers);
 ?>
 
-<a href="users/new/" class="btn btn-primary" role="button">Create User</a>
-<input type="submit" value="Delete Selected Users" class="btn btn-danger" name="submit">
+<a href="<?php echo $siteconfig['baseurl']?>index.php/settings/users/new/" class="btn btn-primary" role="button">Create User</a>
 
 <br><br>
 
@@ -20,7 +19,7 @@
         while($rowUsers = $resultUsers->fetch_assoc()) {
             echo $rowUsers["Username"] . $rowUsers["LastLogin"];
             echo ($rowUsers["UserType"]==1) ? " Admin" :" Operator";
-            echo "<br>";
+            echo "<a class='btn btn-secondary' href='" . $siteconfig['baseurl'] . "index.php/settings/users/reset/" . $rowUsers["Username"] . "'>Reset Password</a><br>";
 
         }
     }

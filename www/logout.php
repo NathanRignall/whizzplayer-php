@@ -5,8 +5,16 @@
     * 18/09/2020
     */
 
+    $pageurl = htmlspecialchars($_SERVER['PHP_SELF']);
+    $urlparts = Explode('/', $pageurl);
+
     //Include Important
-    require_once 'config/config.php';
+    if (file_exists("config/config.php")) {
+        require_once "config/config.php";
+    }
+    else {
+        header("location: /" .  $urlparts[1] . "/setup.php");
+    }
 
     //Initialize the session
     session_start();
