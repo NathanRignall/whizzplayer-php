@@ -110,7 +110,7 @@
             <!-- Track Item Audio Playback -->
             <div class="text-center">
                 <audio controls>
-                    <source src="<?php echo $siteconfig['trackurl'] . $SongFileName ?>" type="audio/mpeg">
+                    <source src="<?php echo $siteconfig['baseurl'] . "tracks.php/" . $SongFileName ?>" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
             </div>
@@ -120,7 +120,7 @@
         <div class="modal-footer">
             <input type="submit" class="btn btn-success" value="Apply Changes" name="apply">
             <form method="post">
-                <input type="submit" class="btn btn-danger" value="Delete Cue" name="delete">
+                <input type="submit" class="btn btn-danger" value="Delete Track" name="delete">
             </form>
             <a href="<?php echo $siteconfig['baseurl'];?>index.php/tracks" class="btn btn-secondary">Return</a>
         </div>

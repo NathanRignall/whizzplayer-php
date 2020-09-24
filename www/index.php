@@ -37,11 +37,18 @@
                    "home"=>"lib/home_page.php");
 
     //If no site is found in index user is sent to home page
-    if (empty($sites[$pageuri])) {
-        $page = "lib/home_page.php";
-    } else {
-        $page = $sites[$pageuri];
+    if (empty($pageuri)) {
+        $pageuri = "home";
+    } elseif (empty($sites[$pageuri])) {
+        $_SESSION["info-headertitle"] = "Error! 404";
+        $_SESSION["info-bodyinfo"] = "Page Not Found!";
+        $_SESSION["info-targeturl"] = "";
+        $_SESSION["info-iserror"] = "y";
+        header("Location: " . $INFOURL);
+        ob_end_flush();
     }
+
+    $page = $sites[$pageuri];
     
     //Initialize the session
     session_start();
@@ -58,26 +65,39 @@
 
 <body>
 
-<!-- Main navbar-->
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-<a class="navbar-brand" href="<?php echo $siteconfig['baseurl'];?>index.php">Music Player</a>
-<ul class="navbar-nav">
-    <li class="nav-item">
-        <a class="nav-link" href="<?php echo $siteconfig['baseurl'];?>index.php/cues">Cues</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="<?php echo $siteconfig['baseurl'];?>index.php/tracks">Tracks</a>
-    </li>
-    <?php
-        //Check if user is admin
-        if($_SESSION["UserType"] == 1){
-            echo' <li class="nav-item"><a class="nav-link" href="' . $siteconfig['baseurl'] . 'index.php/settings">Settings</a></li> ';
-        }
-    ?>
-    <li class="nav-item">
-        <a class="nav-link" href="<?php echo $siteconfig['baseurl'];?>logout.php">Logout</a>
-    </li>
-</ul>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 h1"><?php echo $siteconfig['systemname'];?></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($pageuri=="home") ? "active" : ""; ?>" href="<?php echo $siteconfig['baseurl'];?>index.php/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($pageuri=="cues") ? "active" : ""; ?>" href="<?php echo $siteconfig['baseurl'];?>index.php/cues">Cues</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($pageuri=="tracks") ? "active" : ""; ?>" href="<?php echo $siteconfig['baseurl'];?>index.php/tracks">Tracks</a>
+            </li>
+            <?php
+                //Check if user is admin
+                if($_SESSION["UserType"] == 1){
+                    echo' <li class="nav-item"><a class="nav-link ';
+                    echo ($pageuri=="settings") ? "active" : "";
+                    echo '" href="' . $siteconfig['baseurl'] . 'index.php/settings">Settings</a></li> ';
+                }
+            ?>
+        </ul>
+        
+        <form class="form-inline my-2 my-lg-0">
+            <a class="btn btn-outline-light my-2 my-sm-0" href="<?php echo $siteconfig['baseurl'];?>logout.php">Logout</a>
+            <span class="navbar-text pl-3">
+                <?php echo $_SESSION["username"];?> 
+            </span>
+        </form>
+    </div>
 </nav>
 
 <!-- Full contaner-->

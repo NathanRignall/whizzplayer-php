@@ -17,7 +17,7 @@
     $cardcol = "bg-danger";
   } else {
     $cardcol = "bg-success";
-    header('Refresh: 2; url='.$refreshurl);
+    header('Refresh: 1.5; url='.$refreshurl);
   }
   $_SESSION["info-headertitle"] = $_SESSION["info-bodyinfo"] = $_SESSION["info-targeturl"] = $_SESSION["info-iserror"] = "";
 ?>

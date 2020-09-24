@@ -78,10 +78,10 @@
                         <!-- Track Item Audio Playback -->
                         <div class="text-center">
                             <audio controls>
-                                <source src="<?php echo $siteconfig['trackurl'] . $rowTrackList["SongFile"]; ?>" type="audio/mpeg">
+                                <source src="<?php echo $siteconfig['baseurl'] . "tracks.php/" . $rowTrackList["SongFile"]; ?>" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
-                        </div>
+                        </div>                     
                         <!-- Track Item Flex box items -->
                         <div class="d-flex justify-content-between pt-2">
                             <!-- Track Item Delete Track Checkbox -->

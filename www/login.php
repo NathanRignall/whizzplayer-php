@@ -91,10 +91,13 @@
 <?php require_once 'lib/main_header.php'; ?>
 
 <body>
+    <img src="bin/bg1.jpeg" id="bg">
+
     <!-- Login Top Header -->
     <div class="jumbotron">
         <h1><?php echo $siteconfig['systemname'];?></h1>
-        <span class="badge badge-primary mb-1"><?php echo $siteconfig['version']; ?></span>   
+        <span class="badge badge-primary mb-1"><?php echo $siteconfig['version']; ?></span>
+        <span class="badge badge-success mb-1">By Nathan Rignall</span>
         <p><?php echo $siteconfig['systeminfo'];?></p>  
     </div>
 
@@ -105,14 +108,14 @@
             <div class="form-group">
                 <label>Username</label>
                 <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <small class="form-text text-muted">
+                <small class="form-text text-danger">
                     <?php echo $username_err; ?>
                 </small>
             </div>    
             <div class="form-group">
                 <label>Password</label>
                 <input type="password" name="password" class="form-control">
-                <small class="form-text text-muted">
+                <small class="form-text text-danger">
                     <?php echo $password_err; ?>
                 </small>
             </div>
@@ -120,6 +123,6 @@
                 <input type="submit" class="btn btn-primary" value="Login">
             </div>
         </form>
-    </div> 
+    </div>
 </body>
 </html>

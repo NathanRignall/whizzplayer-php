@@ -6,9 +6,8 @@
         'dbname' => '',
         'dbuser' => '',
         'dbpass' => '',
-        'version' => '0.1.0-alpha.1',
+        'version' => '0.1.0-alpha.1.7',
         'baseurl' => '/whizzplayer/',
-        'trackurl' => '/whizztracks/',
         'uploadtrack' => '/var/www/whizzplayer/tracks/'
     );
 ?>

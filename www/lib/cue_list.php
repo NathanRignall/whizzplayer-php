@@ -204,7 +204,7 @@
                     <!-- Cue Item Audio Playback -->
                     <div class="text-center">
                         <audio controls>
-                            <source src="<?php echo $siteconfig['trackurl'] . $rowClueList["SongFile"]; ?>" type="audio/mpeg">
+                            <source src="<?php echo $siteconfig['baseurl'] . "tracks.php/" . $rowClueList["SongFile"]; ?>" type="audio/mpeg">
                             Your browser does not support the audio element.
                         </audio>
                     </div>

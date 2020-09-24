@@ -21,6 +21,59 @@ musicFolder = "/var/www/whizzplayer/tracks/"
 timeLastPlay = 0
 loopItter = 0
 
+def systemStartup():
+    #Check if correct tables exist
+    table1Sql = "SELECT count(*) FROM information_schema.tables WHERE table_name = 'Tracks' AND TABLE_SCHEMA = 'whizztest'"
+    sqlfetch.execute(table1Sql)
+    table1Result = sqlfetch.fetchall()[0][0]
+    print(table1Result)
+    if table1Result == 0:
+        sqlfetch.execute("CREATE TABLE Tracks (TrackID int NOT NULL AUTO_INCREMENT, TrackDisplayName varchar(255) NOT NULL, SongFile varchar(255) NOT NULL, PRIMARY KEY (TrackID));")
+
+    table2Sql = "SELECT count(*) FROM information_schema.tables WHERE table_name = 'Cues' AND TABLE_SCHEMA = 'whizztest'"
+    sqlfetch.execute(table2Sql)
+    table2Result = sqlfetch.fetchall()[0][0]
+    if table2Result == 0:
+        sqlfetch.execute("CREATE TABLE Cues (CueID int NOT NULL AUTO_INCREMENT, CueDisplayName varchar(255) NOT NULL, TrackID int NOT NULL, PlayTime time NOT NULL, PlayDate date NOT NULL, Repeats BOOLEAN NOT NULL, RepeatMon BOOLEAN, RepeatTue BOOLEAN, RepeatWed BOOLEAN, RepeatThu BOOLEAN, RepeatFri BOOLEAN, RepeatSat BOOLEAN, RepeatSun BOOLEAN, Enabled BOOLEAN NOT NULL, PRIMARY KEY (CueID), FOREIGN KEY (TrackID) REFERENCES Tracks(TrackID));")
+
+    table3Sql = "SELECT count(*) FROM information_schema.tables WHERE table_name = 'Playing' AND TABLE_SCHEMA = 'whizztest'"
+    sqlfetch.execute(table3Sql)
+    table3Result = sqlfetch.fetchall()[0][0]
+    if table3Result == 0:
+        sqlfetch.execute("CREATE TABLE Playing (TrackID int NOT NULL, HaltTrack BOOLEAN NOT NULL);")
+
+    table4Sql = "SELECT count(*) FROM information_schema.tables WHERE table_name = 'InstantPlay' AND TABLE_SCHEMA = 'whizztest'"
+    sqlfetch.execute(table4Sql)
+    table4Result = sqlfetch.fetchall()[0][0]
+    if table4Result == 0:
+        sqlfetch.execute("CREATE TABLE InstantPlay (TrackID int NOT NULL,Played BOOLEAN NOT NULL);")
+
+    table5Sql = "SELECT count(*) FROM information_schema.tables WHERE table_name = 'Users' AND TABLE_SCHEMA = 'whizztest'"
+    sqlfetch.execute(table5Sql)
+    table5Result = sqlfetch.fetchall()[0][0]
+    if table5Result == 0:
+        sqlfetch.execute("CREATE TABLE Users (UserID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,Username VARCHAR(50) NOT NULL UNIQUE,Password VARCHAR(255) NOT NULL,CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP, LastLogin DATETIME, UserType int NOT NULL DEFAULT 0 );")
+
+    #Check if correct default vaules exist
+    table6Sql = "SELECT count(*) FROM Playing"
+    sqlfetch.execute(table6Sql)
+    table6Result = sqlfetch.fetchall()[0][0]
+    if table6Result == 0:
+        createTable6Sql = "INSERT INTO Playing (TrackID,HaltTrack) VALUES (0,False);"
+        sqlfetch.execute(createTable6Sql)
+
+    table7Sql = "SELECT count(*) FROM InstantPlay"
+    sqlfetch.execute(table7Sql)
+    table7Result = sqlfetch.fetchall()[0][0]
+    if table7Result == 0:
+        createTable7Sql = "INSERT INTO InstantPlay (TrackID,Played) VALUES (0,True);"
+        sqlfetch.execute(createTable7Sql)
+
+    sqlfetch.execute("UPDATE Playing SET HaltTrack = 0")
+    sqlfetch.execute("UPDATE InstantPlay SET Played = 1")
+
+    print("Startup Complete")
+
 def playSong(fileNameEnding,trackID):
     global timeLastPlay
     loadSongFileName = musicFolder + fileNameEnding
@@ -156,6 +209,7 @@ def fastLoop():
 
 try:
     print("STARTUP!!")
+    systemStartup()
     while True:
         fastLoop()
         if loopItter == 0:

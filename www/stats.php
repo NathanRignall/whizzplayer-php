@@ -12,14 +12,8 @@
     $pageurl = htmlspecialchars($_SERVER['PHP_SELF']);
     $urlparts = Explode('/', $pageurl);
 
-    //Include Important
-    if (file_exists("config/config.php")) {
-        require_once "config/config.php";
-        require_once 'lib/sql_connect.php';
-    }
-    else {
-        header("location: /" .  $urlparts[1] . "/setup.php");
-    }
+    require_once "config/config.php";
+    require_once 'lib/sql_connect.php';
 
     $pageuri = basename(($_SERVER['REQUEST_URI']));
     $pageuri = strtok($pageuri, '?');
@@ -41,6 +35,15 @@
         //Get time data
         $time = date('Y/m/d H:i:s');
         echo "data: {$time}\n\n";
+    } elseif ($pageuri == "backend") {
+        $execResult = shell_exec("pgrep -f '/usr/bin/python3 /var/www/whizzplayer/local/main.py'");
+        $execResult = trim(preg_replace('/\s+/', ' ', $execResult));
+        $execParts = Explode(' ', $execResult);
+        if (count($execParts) == 3) {
+            echo "data: Backend Process Running\n\n";
+        } else {
+            echo "data: Backend Not Running\n\n";
+        }
     }
 
     flush();

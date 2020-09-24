@@ -33,6 +33,7 @@
 <div class="jumbotron">
     <h1><?php echo $siteconfig['systemname'];?></h1>
     <span class="badge badge-primary mb-1"><?php echo $siteconfig['version']; ?></span>
+    <span class="badge badge-success mb-1">By Nathan Rignall</span>
     <p><?php echo $siteconfig['systeminfo'];?></p>
     <a href="<?php echo $siteconfig['baseurl'];?>index.php/cues?createinstant=Y" class="btn btn-dark btn-lg mt-1" role="button">Create Cue</a>
     <a href="<?php echo $siteconfig['baseurl'];?>index.php/tracks?uploadinstant=Y" class="btn btn-secondary btn-lg mt-1" role="button">Upload Track</a>
@@ -48,25 +49,25 @@
                 <h2>Now Playing</h2>
             </div>
             <div class="card-body text-center">
-                <h3 id="nowplaying">No Track Playing</h3>
+                <h3 id="nowplaying">No Data</h3>
             </div>
         </div>
     </div>
     <!-- System Time Item+Card -->
     <div class="col mb-4">
         <div class="card">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header bg-secondary text-white">
                 <h2>System Time</h2>
             </div>
             <div class="card-body text-center">
-                <h3 id="systemtime">No Track Playing</h3>
+                <h3 id="systemtime">No Data</h3>
             </div>
         </div>
     </div>
     <!-- Instant Play Item+Card -->
     <div class="col mb-4">
         <div class="card">
-            <div class="card-header bg-success text-white">
+            <div class="card-header bg-secondary text-white">
                 <h2>Instant Play</h2>
             </div>
             <div class="card-body">
@@ -90,12 +91,25 @@
             </div>
         </div>
     </div>
+    <!-- Backend Process Item+Card -->
+    <div class="col mb-4">
+        <div class="card">
+            <div id="processstatusdiv" class="card-header bg-secondary text-white">
+                <h2>Process Status</h2>
+            </div>
+            <div class="card-body text-center">
+                <h3 id="processstatus">No Data</h3>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
     //SSE Event for Now playing feild
     if(typeof(EventSource) !== "undefined") {
         var source1 = new EventSource("<?php echo $siteconfig['baseurl'];?>stats.php/playing");
+        var source2 = new EventSource("<?php echo $siteconfig['baseurl'];?>stats.php/time");
+        var source3 = new EventSource("<?php echo $siteconfig['baseurl'];?>stats.php/backend");
         source1.onmessage = function(event) {
             document.getElementById("nowplaying").innerHTML = event.data;
             if (event.data == "No Track Playing") {
@@ -106,17 +120,22 @@
                 document.getElementById("nowplayingdiv").classList.add("bg-warning");
             }
         };
-    } else {
-        document.getElementById("nowplaying").innerHTML = "Sorry, your browser does not support server-sent events...";
-    };
-
-    //SSE Event for system time feild
-    if(typeof(EventSource) !== "undefined") {
-        var source2 = new EventSource("<?php echo $siteconfig['baseurl'];?>stats.php/time");
         source2.onmessage = function(event) {
             document.getElementById("systemtime").innerHTML = event.data;
         };
+        source3.onmessage = function(event) {
+            document.getElementById("processstatus").innerHTML = event.data;
+            if (event.data == "Backend Not Running") {
+                document.getElementById("processstatusdiv").classList.remove("bg-success");
+                document.getElementById("processstatusdiv").classList.add("bg-danger");
+            } else {
+                document.getElementById("processstatusdiv").classList.remove("bg-danger");
+                document.getElementById("processstatusdiv").classList.add("bg-success");
+            }
+        };
     } else {
+        document.getElementById("nowplaying").innerHTML = "Sorry, your browser does not support server-sent events...";
         document.getElementById("systemtime").innerHTML = "Sorry, your browser does not support server-sent events...";
+        document.getElementById("processstatus").innerHTML = "Sorry, your browser does not support server-sent events...";
     };
 </script>
