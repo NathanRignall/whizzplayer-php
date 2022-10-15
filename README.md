@@ -1,1 +1,7 @@
-# Whizz Player 0.1.0-alpha.1
+# (OLD) WhizzPlayer (PHP)
+
+WhizzPlayer is an application to cue playback of tracks for automatic playback via a web application.
+
+This is the original version of WhizzPlayer built in PHP and Python
+
+[NEW VERSION](https://github.com/NathanRignall/WhizzPlayer)
